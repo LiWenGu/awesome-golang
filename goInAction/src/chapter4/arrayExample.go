@@ -1,4 +1,4 @@
-package chapter4
+package main
 
 func main() {
 	array := [5]int{10}

@@ -1,4 +1,4 @@
-package chapter5
+package main
 
 type user struct {
 	name  string

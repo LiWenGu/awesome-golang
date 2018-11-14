@@ -1,10 +1,10 @@
 package main
 
 import (
+	_ "chapter2/sample/matchers"
+	"chapter2/sample/search"
 	"log"
 	"os"
-	_"chapter2/sample/matchers"
-	"chapter2/sample/search"
 )
 
 func init() {

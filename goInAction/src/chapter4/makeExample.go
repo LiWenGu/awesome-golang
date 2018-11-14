@@ -25,12 +25,12 @@ func main() {
 	slices := append(slicez, 50, 50, 50)
 	fmt.Printf("%v\n", slices)
 
-	for index, value := range slices  {
+	for index, value := range slices {
 		fmt.Printf("index: %d, value: %d\n", index, value)
 	}
 
 	// len() 切片的长度， cap() 切片的容量
-	for index := 2; index < len(slices); index++  {
+	for index := 2; index < len(slices); index++ {
 		fmt.Printf("%s", slices[index])
 	}
 }

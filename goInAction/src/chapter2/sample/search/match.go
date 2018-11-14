@@ -14,7 +14,7 @@ type Result struct {
 // Matcher 定义了要实现的
 // 新搜索类型的行为
 type Matcher interface {
-	Search(feed *Feed, searchTerm string)([]*Result, error)
+	Search(feed *Feed, searchTerm string) ([]*Result, error)
 }
 
 // Match 函数，为每个数据源单独启动goroutine 来执行这个函数

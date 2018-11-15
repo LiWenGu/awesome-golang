@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net"
+	"strings"
+	"time"
 )
 
 type Client struct {
@@ -73,8 +75,11 @@ func HandleConn(conn net.Conn) {
 	// 当前客户端发送上线广播
 	message <- MakeMsg(client, "上线了")
 
+	// 当前客户端是否主动退出
+	isQuit := make(chan bool)
+	// 超时
+	hasData := make(chan bool)
 	// 新建一个协程，接收用户发送过来的消息
-
 	go func() {
 		buf := make([]byte, 2048)
 
@@ -82,17 +87,47 @@ func HandleConn(conn net.Conn) {
 			n, err := conn.Read(buf)
 			if n == 0 {
 				// 对方断开或者出问题
+				isQuit <- true
 				fmt.Println("conn.Read err = ", err)
 				return
 			}
 
-			// 转发此内容
-			message <- MakeMsg(client, string(buf[:n-1]))
+			msg := string(buf[:n-2])
+			if len(msg) == 3 && msg == "who" {
+				conn.Write([]byte("user list:\n"))
+				for _, tmp := range onlineMap {
+					msg = tmp.Addr + ":" + tmp.Name + "\n"
+					conn.Write([]byte(msg))
+				}
+			} else if len(msg) >= 8 && msg[:6] == "rename" {
+				name := strings.Split(msg, "|")[1]
+				client.Name = name
+				onlineMap[cliAddr] = client
+				conn.Write([]byte("修改名成功\n"))
+			} else {
+				// 转发此内容
+				message <- MakeMsg(client, msg)
+			}
+			// 有数据
+			hasData <- true
 		}
 	}()
+
 	// 当前客户端用不断线
 	for {
-
+		select {
+		case <-isQuit:
+			// 移除当前用户
+			delete(onlineMap, cliAddr)
+			// 广播下线
+			message <- MakeMsg(client, "login out")
+			return
+		case <-hasData:
+		case <-time.After(10 * time.Second):
+			delete(onlineMap, cliAddr)
+			message <- MakeMsg(client, "time out leave out")
+			conn.Close()
+		}
 	}
 
 	defer conn.Close()

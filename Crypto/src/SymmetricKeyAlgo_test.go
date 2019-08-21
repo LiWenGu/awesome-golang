@@ -6,8 +6,7 @@ import (
 )
 
 func TestDES(t *testing.T) {
-	fmt.Println("===== des 加解密 ====")
-	src := []byte("少壮不努力，老大徒伤悲")
+	src := []byte("我是一个不知道有多长的明文")
 	key := []byte("12345678")
 	str := encryptoDES(src, key)
 	fmt.Println("加密之后的密文：" + string(str))
@@ -16,8 +15,7 @@ func TestDES(t *testing.T) {
 }
 
 func Test3DES(t *testing.T) {
-	fmt.Println("===== 3des 加解密 ====")
-	src := []byte("少壮不努力，老大徒伤悲")
+	src := []byte("我是一个不知道有多长的明文")
 	key := []byte("12345678abcdefgh87654321")
 	str := encrypto3DES(src, key)
 	fmt.Println("加密之后的密文：" + string(str))
@@ -26,8 +24,8 @@ func Test3DES(t *testing.T) {
 }
 
 func TestAES(t *testing.T) {
-	fmt.Println("===== aes 加解密 ====")
-	src := []byte("少壮不努力，老大徒伤悲")
+	src := []byte("我是一个不知道有多长的明文")
+	// TODO 这里会报错，因为秘钥长度是 17 byte，去掉一个字符就好了
 	key := []byte("1234abcd4321dcbaw")
 	str := encryptoAES(src, key)
 	fmt.Println("加密之后的密文：" + string(str))

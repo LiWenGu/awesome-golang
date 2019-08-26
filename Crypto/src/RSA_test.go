@@ -10,8 +10,8 @@ func TestRsaGenKey(t *testing.T) {
 
 	src := []byte("我是一个明文")
 	fmt.Println("加密前：" + string(src))
-	data := RSAPublicEncrypto(src, "public.pem")
+	data := RSAPublicEncrypto(src, PublicKeyFile)
 	fmt.Println("加密后：" + string(data))
-	data = RSAPrivateDecrypt(data, "private.pem")
+	data = RSAPrivateDecrypt(data, PrivateKeyFile)
 	fmt.Println("解密后：" + string(data))
 }

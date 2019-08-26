@@ -8,6 +8,7 @@ import (
 	"os"
 )
 
+// 生成非对称秘钥对
 func RsaGenKey(bits int) {
 	// 1. 使用 rsa 的 GenerateKey 方法生成私钥
 	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
